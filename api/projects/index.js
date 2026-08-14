@@ -1,0 +1,2 @@
+const { axios, APS, userToken, error } = require('../_lib');
+module.exports = async (req,res) => { try { const hubId=req.query.hubId; if(!hubId) return res.status(400).json({message:'hubId is required'}); const t=await userToken(req,res); const r=await axios.get(`${APS}/project/v1/hubs/${hubId}/projects`,{headers:{Authorization:`Bearer ${t}`}}); const projects=(r.data.data||[]).map(p=>({id:p.id,name:p.attributes?.name||p.id})); res.json({projects}); } catch(e){ error(res,e); } };
