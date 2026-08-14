@@ -1,0 +1,2 @@
+const { requireConfig, APS, error } = require('../_lib');
+module.exports = (req,res) => { try { requireConfig(); const url = new URL(`${APS}/authentication/v2/authorize`); url.searchParams.set('response_type','code'); url.searchParams.set('client_id',process.env.APS_CLIENT_ID); url.searchParams.set('redirect_uri',process.env.APS_CALLBACK_URL); url.searchParams.set('scope','data:read account:read account:write'); res.json({url:url.toString()}); } catch(e){ error(res,e); } };

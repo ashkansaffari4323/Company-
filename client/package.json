@@ -1,6 +1,6 @@
 {
-  "name": "company-import-client",
-  "version": "4.0.0",
+  "name": "company-upload-client",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
