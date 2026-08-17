@@ -1,14 +1,1 @@
-{
-  "name": "company-import",
-  "version": "4.0.0",
-  "private": true,
-  "scripts": {
-    "postinstall": "npm install --prefix client && npm install --prefix server",
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "client": "npm run dev --prefix client",
-    "server": "npm run dev --prefix server"
-  },
-  "dependencies": {
-    "concurrently": "^8.2.2"
-  }
-}
+{"name":"company-upload-purge","version":"1.0.0","private":true,"scripts":{"dev":"npm run dev --prefix client","vercel-dev":"vercel dev","build":"npm install --prefix client && npm run build --prefix client"},"dependencies":{"@vercel/node":"latest","axios":"^1.6.8"},"devDependencies":{"vercel":"latest"}}

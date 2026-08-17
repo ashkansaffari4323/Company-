@@ -1,2 +1,1 @@
-const { getSession } = require('../_lib');
-module.exports = (req,res) => { const sess=getSession(req); res.json({authenticated:!!(sess&&sess.access_token),expiresAt:sess&&sess.expires_at||null}); };
+const{getSession}=require('../_lib');module.exports=(req,res)=>{const s=getSession(req);res.json({authenticated:!!s,expiresAt:s?.expires_at||null})};
