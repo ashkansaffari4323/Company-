@@ -1,23 +1,22 @@
-# Name-only import patch
+# Company Upload Final
 
-Copy these files into your existing app repository and replace the same paths:
+Latest complete Vercel-ready Autodesk ACC/BIM 360 company upload app.
 
-- api/_lib.js
-- api/companies/import.js
-- api/companies/import-batch.js
+## Included fixes
 
-What this fixes:
+- Vercel Hobby compatible: 12 API functions only.
+- Shared helper moved to `/lib/_lib.js`, not `/api/_lib.js`.
+- Large Excel imports are browser-controlled batches of 50 companies via `/api/companies/import-batch`.
+- Only **Name** is mandatory in Excel validation.
+- Trade is optional in Excel. Backend sends a safe default trade if Excel trade is blank/0/N/A.
+- Company creation sends only `name` and `trade` to Autodesk, avoiding country/state/phone/ABN validation errors.
+- Validation checks existing hub companies and duplicate names inside Excel.
+- Hub Admin supports company list/filter, company detail, company image upload, project list.
+- Purge uses PATCH, not DELETE, for zero-member companies.
 
-- Only `name` is treated as mandatory by the import backend.
-- `trade` is optional from Excel. If trade is blank, `0`, `N/A`, etc., the backend uses a default trade.
-- `state_or_province`, `phone`, `tax_id` / ABN, country, address, website, and description are optional.
-- Placeholder values such as `0`, `0.0`, `N/A`, `NA`, `null`, `undefined`, `none`, `-`, `--`, and `#N/A` are removed before sending to Autodesk.
-- Both old and new import routes are patched:
-  - `/api/companies/import`
-  - `/api/companies/import-batch`
+## Vercel settings
 
-Optional Vercel environment variable:
-
-DEFAULT_TRADE=Corporate & Professional Services
-
-If DEFAULT_TRADE is not set, the backend uses `Corporate & Professional Services`.
+Framework Preset: Other
+Install Command: npm install
+Build Command: npm run build
+Output Directory: client/dist
