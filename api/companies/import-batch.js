@@ -1,4 +1,4 @@
-const { axios, APS, twoLegged, account, buildCompanyPayload, error } = require('../_lib');
+const { axios, APS, twoLegged, account, buildCompanyPayload, error } = require('../../lib/_lib');
 
 module.exports = async (req, res) => {
   try {
