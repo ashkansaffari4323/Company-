@@ -1,15 +1,24 @@
-# Company Upload Large Import
+# Company Upload Validate
 
 Vercel-ready Autodesk ACC/BIM 360 app.
 
-## Fix for 504 on large Excel files
+## New feature
 
-The client imports large Excel files in batches of 50 companies by calling `/api/companies/import-batch` once per batch. A 10,300-row file becomes 206 small API calls instead of one long-running Vercel function.
+Before import, click **Validate Excel**. The app checks:
 
-## Features
+- Duplicate names inside the Excel file
+- Companies already existing in the selected hub
+- Missing required fields
 
-- Autodesk sign-in and hub selection
-- Large Excel import with progress, 50-company API batches, and downloadable report
-- Company list filters
-- Company image upload
-- Patch purge for zero-member companies, with report tab
+Only rows marked **Ready** are imported. Existing and duplicate rows are skipped and shown in the validation report.
+
+## Large files
+
+A single Excel file can contain thousands of companies. Import is sent from the browser in batches of 50 companies per API call to avoid Vercel 504 timeouts.
+
+## Vercel settings
+
+Framework Preset: Other
+Install Command: npm install
+Build Command: npm run build
+Output Directory: client/dist
