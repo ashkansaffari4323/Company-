@@ -1,22 +1,13 @@
-# Company Upload Purge
+# Company Upload Purge Report
 
-Vercel-ready Autodesk ACC/BIM 360 company upload app.
+Vercel-ready Autodesk ACC/BIM 360 company upload app with Purge Report tab.
 
-## Features
+## New in this version
 
-- Autodesk 3-legged sign-in.
-- Hub dropdown with optional ACC account fallback.
-- Bulk company import using `/hq/v1/accounts/{account_id}/companies/import` in batches of 50.
-- Hub company list using `/construction/admin/v1/accounts/{accountId}/companies`.
-- Company details using `/hq/v1/accounts/{account_id}/companies/{company_id}`.
-- Company image upload using `/hq/v1/accounts/{account_id}/companies/{company_id}/image`.
-- Purge companies with 0 members.
-
-## Purge rules
-
-Default: `userSize == 0 and projectSize == 0`.
-Optional: include project-linked companies when `userSize == 0`.
-The app requires typing `PURGE` before deletion.
+- Purge action now reports the number of companies scanned, candidates, deleted, and failed.
+- New Report tab shows purge summary numbers clearly.
+- Report tab can download a CSV report of purge results.
+- Purge deletion still depends on Autodesk API availability/permissions in the tenant. If Autodesk refuses deletion, the report shows 0 deleted and the exact error per company.
 
 ## Vercel settings
 
