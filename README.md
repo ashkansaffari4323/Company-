@@ -1,24 +1,9 @@
-# Company Upload Validate
+# Company Upload Optional Fields
 
-Vercel-ready Autodesk ACC/BIM 360 app.
+This version makes State, Phone, and Tax ID / ABN optional.
 
-## New feature
+Values like `0`, `N/A`, `NA`, `null`, `undefined`, `-`, and blank are cleaned before sending to Autodesk.
 
-Before import, click **Validate Excel**. The app checks:
+Only `Name` and `Trade` are required by the app validation.
 
-- Duplicate names inside the Excel file
-- Companies already existing in the selected hub
-- Missing required fields
-
-Only rows marked **Ready** are imported. Existing and duplicate rows are skipped and shown in the validation report.
-
-## Large files
-
-A single Excel file can contain thousands of companies. Import is sent from the browser in batches of 50 companies per API call to avoid Vercel 504 timeouts.
-
-## Vercel settings
-
-Framework Preset: Other
-Install Command: npm install
-Build Command: npm run build
-Output Directory: client/dist
+Large Excel files are still imported in browser-controlled batches of 50 companies to avoid Vercel 504 timeout.
