@@ -1,30 +1,15 @@
-# Company Upload Purge Patch
+# Company Upload Large Import
 
-Vercel-ready Autodesk ACC/BIM 360 company upload app.
+Vercel-ready Autodesk ACC/BIM 360 app.
 
-## Important purge behaviour
+## Fix for 504 on large Excel files
 
-There is no DELETE workflow in this version. Purge uses PATCH on each 0-member company:
+The client imports large Excel files in batches of 50 companies by calling `/api/companies/import-batch` once per batch. A 10,300-row file becomes 206 small API calls instead of one long-running Vercel function.
 
-PATCH /hq/v1/accounts/{account_id}/companies/{company_id}
+## Features
 
-The app first tries to set `status: deleted` and rename the company to `removed at ... {company_id}`. If Autodesk rejects that, the app tries `status: inactive`, and then rename-only as a final fallback.
-
-## Purge report
-
-The Report tab shows:
-- Total scanned
-- Zero-member companies
-- Already deleted
-- Candidates patched
-- Patched deleted
-- Patched inactive
-- Renamed only
-- Failed
-
-## Vercel settings
-
-Framework Preset: Other
-Install Command: npm install
-Build Command: npm run build
-Output Directory: client/dist
+- Autodesk sign-in and hub selection
+- Large Excel import with progress, 50-company API batches, and downloadable report
+- Company list filters
+- Company image upload
+- Patch purge for zero-member companies, with report tab
