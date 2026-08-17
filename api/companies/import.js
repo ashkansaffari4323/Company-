@@ -1,3 +1,57 @@
-const{axios,APS,twoLegged,account,buildCompanyPayload,error}=require('../_lib');
-function chunks(a,n){let o=[];for(let i=0;i<a.length;i+=n)o.push(a.slice(i,i+n));return o}
-module.exports=async(req,res)=>{try{const t=await twoLegged('account:write'),aid=account(req.body.hubId),companies=(req.body.companies||[]).filter(c=>c&&c.name);if(!aid)return res.status(400).json({message:'Hub is required.'});let results=[],success=0,failure=0;for(const[b,batch]of chunks(companies.map(buildCompanyPayload),50).entries()){try{const r=await axios.post(`${APS}/hq/v1/accounts/${aid}/companies/import`,batch,{headers:{Authorization:`Bearer ${t}`,'Content-Type':'application/json'}});success+=r.data.success||0;failure+=r.data.failure||0;results.push({batch:b+1,...r.data})}catch(e){failure+=batch.length;results.push({batch:b+1,status:'failed',failure:batch.length,error:e.response?.data||e.message})}}res.json({accountId:aid,totalCompanies:companies.length,batches:results.length,success,failure,results})}catch(e){error(res,e)}};
+const { axios, APS, twoLegged, account, buildCompanyPayload, error } = require('../_lib');
+
+function chunks(items, size) {
+  const output = [];
+  for (let index = 0; index < items.length; index += size) output.push(items.slice(index, index + size));
+  return output;
+}
+
+module.exports = async (req, res) => {
+  try {
+    const token = await twoLegged('account:write');
+    const accountId = account(req.body.hubId);
+    if (!accountId) return res.status(400).json({ message: 'Hub is required.' });
+
+    const payloads = (req.body.companies || [])
+      .map(buildCompanyPayload)
+      .filter(Boolean);
+
+    if (!payloads.length) return res.status(400).json({ message: 'No valid company names found.' });
+
+    const results = [];
+    let success = 0;
+    let failure = 0;
+
+    for (const [batchIndex, batch] of chunks(payloads, 50).entries()) {
+      try {
+        const response = await axios.post(
+          `${APS}/hq/v1/accounts/${accountId}/companies/import`,
+          batch,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        success += response.data.success || 0;
+        failure += response.data.failure || 0;
+        results.push({ batch: batchIndex + 1, ...response.data });
+      } catch (err) {
+        failure += batch.length;
+        results.push({ batch: batchIndex + 1, status: 'failed', failure: batch.length, error: err.response?.data || err.message });
+      }
+    }
+
+    res.json({
+      accountId,
+      totalCompanies: payloads.length,
+      batches: results.length,
+      success,
+      failure,
+      results
+    });
+  } catch (err) {
+    error(res, err);
+  }
+};

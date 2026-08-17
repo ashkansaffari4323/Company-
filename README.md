@@ -1,12 +1,23 @@
-# Clean Fields Patch
+# Name-only import patch
 
-Copy these files into your existing app repository, replacing the same paths.
+Copy these files into your existing app repository and replace the same paths:
 
-This patch fixes imports where State, Phone, and Tax ID / ABN contain invalid placeholder values such as `0`, `N/A`, `NA`, `null`, `undefined`, `none`, `-`, or `--`.
-
-It updates both import routes:
-
-- api/companies/import-batch.js
+- api/_lib.js
 - api/companies/import.js
+- api/companies/import-batch.js
 
-This matters because your failed result was still using the old bulk import route `/api/companies/import`, not only the new batch route.
+What this fixes:
+
+- Only `name` is treated as mandatory by the import backend.
+- `trade` is optional from Excel. If trade is blank, `0`, `N/A`, etc., the backend uses a default trade.
+- `state_or_province`, `phone`, `tax_id` / ABN, country, address, website, and description are optional.
+- Placeholder values such as `0`, `0.0`, `N/A`, `NA`, `null`, `undefined`, `none`, `-`, `--`, and `#N/A` are removed before sending to Autodesk.
+- Both old and new import routes are patched:
+  - `/api/companies/import`
+  - `/api/companies/import-batch`
+
+Optional Vercel environment variable:
+
+DEFAULT_TRADE=Corporate & Professional Services
+
+If DEFAULT_TRADE is not set, the backend uses `Corporate & Professional Services`.
