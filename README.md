@@ -1,13 +1,26 @@
-# Company Upload Purge Report
+# Company Upload Purge Patch
 
-Vercel-ready Autodesk ACC/BIM 360 company upload app with Purge Report tab.
+Vercel-ready Autodesk ACC/BIM 360 company upload app.
 
-## New in this version
+## Important purge behaviour
 
-- Purge action now reports the number of companies scanned, candidates, deleted, and failed.
-- New Report tab shows purge summary numbers clearly.
-- Report tab can download a CSV report of purge results.
-- Purge deletion still depends on Autodesk API availability/permissions in the tenant. If Autodesk refuses deletion, the report shows 0 deleted and the exact error per company.
+There is no DELETE workflow in this version. Purge uses PATCH on each 0-member company:
+
+PATCH /hq/v1/accounts/{account_id}/companies/{company_id}
+
+The app first tries to set `status: deleted` and rename the company to `removed at ... {company_id}`. If Autodesk rejects that, the app tries `status: inactive`, and then rename-only as a final fallback.
+
+## Purge report
+
+The Report tab shows:
+- Total scanned
+- Zero-member companies
+- Already deleted
+- Candidates patched
+- Patched deleted
+- Patched inactive
+- Renamed only
+- Failed
 
 ## Vercel settings
 
